@@ -2,8 +2,6 @@ name: Deploy to Arc Testnet
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
   deploy:
@@ -11,22 +9,21 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
-
-      - name: Build contract
-        run: forge build
-
-      - name: Deploy to Arc Testnet
-        env:
-          ARC_TESTNET_RPC_URL: ${{ secrets.ARC_TESTNET_RPC_URL }}
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          source ~/.bashrc
+          foundryup
+
+      - name: Deploy contract
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          ARC_TESTNET_RPC_URL: ${{ secrets.ARC_TESTNET_RPC_URL }}
+        run: |
+          source ~/.bashrc
           forge create src/HelloArchitect.sol:HelloArchitect \
             --rpc-url $ARC_TESTNET_RPC_URL \
-            --private-key $PRIVATE_KEY
+            --private-key $PRIVATE_KEY \
             --broadcast
