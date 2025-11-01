@@ -16,12 +16,18 @@ jobs:
         with:
           version: stable
 
+      - name: Check Foundry installation
+        run: |
+          echo "Checking Forge installation..."
+          which forge || echo "Forge not found"
+          forge --version || echo "Forge version check failed"
+
       - name: Deploy contract
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           ARC_TESTNET_RPC_URL: ${{ secrets.ARC_TESTNET_RPC_URL }}
         run: |
-          forge --version
+          echo "Starting deployment..."
           forge create src/HelloArchitect.sol:HelloArchitect \
             --rpc-url $ARC_TESTNET_RPC_URL \
             --private-key $PRIVATE_KEY \
