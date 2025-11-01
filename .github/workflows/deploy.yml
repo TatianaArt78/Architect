@@ -29,3 +29,4 @@ jobs:
           forge create src/HelloArchitect.sol:HelloArchitect \
             --rpc-url $ARC_TESTNET_RPC_URL \
             --private-key $PRIVATE_KEY
+            --broadcast
