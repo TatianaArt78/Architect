@@ -14,7 +14,7 @@ jobs:
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
-          source ~/.bashrc
+          export PATH="$HOME/.foundry/bin:$PATH"
           foundryup
 
       - name: Deploy contract
@@ -22,7 +22,7 @@ jobs:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           ARC_TESTNET_RPC_URL: ${{ secrets.ARC_TESTNET_RPC_URL }}
         run: |
-          source ~/.bashrc
+          export PATH="$HOME/.foundry/bin:$PATH"
           forge create src/HelloArchitect.sol:HelloArchitect \
             --rpc-url $ARC_TESTNET_RPC_URL \
             --private-key $PRIVATE_KEY \
